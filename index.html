@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script>
+			var update = true;
+			var selectElement = -1;
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() 
+				{
+					if (this.readyState == 4 && this.status == 200) 
+					document.getElementById("c").innerHTML = this.responseText;
+				};
+								
+			function request(r) 
+				{		
+					if (update)
+						{							
+							xhttp.open("POST", "request.php?q=" + r, true);
+							xhttp.send(); 
+						}
+				}
+			
+			function select(id)
+				{
+					selectElement = id;
+					update = false;
+				}
+			
+			function move(id)
+				{
+					document.getElementById(id).src = document.getElementById(selectElement).src;
+					document.getElementById(selectElement).src = "void2.png";
+					document.getElementById(id).setAttribute("onClick", "javascript: select(this.id);");
+					document.getElementById(selectElement).setAttribute("onClick", "javascript: move(this.id);");
+					selectElement = -1;
+				}
+
+			window.setInterval("request('chessboard')", 1000);
+		</script>
+	</head>
+
+	<body>
+		<div id="c" style="line-height: 0px;">
+		</div>
+	</body>
+</html>
